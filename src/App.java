@@ -47,3 +47,6 @@ public class App {
 
 //can even input clock and control execution
 //Thread.sleep(1000);
+// can even try to build clock
+// stretch - clock show in am/pm
+// just need a while loop
