@@ -1,7 +1,7 @@
 ## app details
 
-This app shall convert from eastern time to indian time.
+This app shall convert from eastern time to indian time and vice versa.
 
-## branch details: assume-perfect-user-input-24hr-est2india
+## branch details: 24hr-est2ist-ist2est
 
-This app shall take user input in 12 hr am or pm, 24hr, and allow user to pick EST or IST as the starting Time Zone.
+This version can take 24 hour format entry only, ask user if they would like to convert from IST to EST or EST to IST, and perform the conversion and output the result.
