@@ -1,52 +1,70 @@
-import java.util.Scanner;
+// userInputTime[0] is the user inputted hour
+// userInputTime[1] is the user inputted minutes
+// userInputTime[2] is the user's pick for timezone change
+
+// resultTime[0] is the result hours
+// resultTime[1] is the result minutes
+
+// timeResultString[0] is the result hours resultTime[0]
+// timeResultString[1] is the result minutes resultTime[1]
+// timeResultString[2] is the user inputted hours userInputTime[0]
+// timeResultString[3] is the user inputted minutes userInputTime[1]
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("\nThis app will do a simple mathematical process to change time from EST to India.\n");
-        System.out.print("Please enter the EST time in the 24-hour clock format hh:mm, \n");
-        String userInput = scanner.next(); // take user input
-        
-        
-        // System.out.print("AM, PM, or 24 hour clock? Enter A/P/2:"); // choose am pm or 24 hour clock
-        // String ampm24 = scanner.next(); //take user input for am pm or 24
-        // if(ampm24.equalsIgnoreCase("A")){System.out.println("Entry error. Please enter as A/P/2" );} //conditional to check for am pm or 24
-        
-        String[] timeArray = userInput.split(":");
-        int inputHours = Integer.parseInt(timeArray[0]);
-        int inputMinutes = Integer.parseInt(timeArray[1]);
-        System.out.println("The time you gave is " + inputHours + ":" + inputMinutes );
+        UserInput userInput = new UserInput();
 
+        int[] userInputTime = userInput.getUserInput(); // gets user input time and time zone change request 
+        int[] resultTime = null;
 
-        // minutes logic... when minutes > 60, increase hours by +1 and minutes - 60
-        int minutesChanging = inputMinutes + 30;
-        int resultMinutes;
-        if(minutesChanging >= 60){
-            resultMinutes = minutesChanging - 60;
-            inputHours = inputHours + 1;
+        // Call methods depending on user desired time zone change 1 or 2
+
+        // call method for convert from EST to IST
+        if (userInputTime[2] == 1) {
+            ESTtoIST esTtoIST = new ESTtoIST();
+            resultTime = esTtoIST.calcTime(userInputTime);
         }
-        else resultMinutes = minutesChanging;
-
-        // hours logic
-        int hoursChanging = inputHours + 10;
-        int resultHours;
-        if(hoursChanging >= 24){
-            resultHours = hoursChanging - 24;
-        }
-        else{
-            resultHours = inputHours + 10;
+        // call method for convert from IST to EST
+        if (userInputTime[2] == 2) {
+            ISTtoEST isTtoEST = new ISTtoEST();
+            resultTime = isTtoEST.calcTime(userInputTime);
         }
 
-        // add a 0 in front of single digit minutes when printing result
-        if(resultMinutes < 10)System.out.println(resultHours + ":" + "0" + resultMinutes);    
-        else System.out.println(resultHours + ":" + resultMinutes);
+        String[] timeResultString = new String[4];
+        
+        // string formatting for the result times
+        if (resultTime[0] < 10) {
+            timeResultString[0] = ("0" + String.valueOf(resultTime[0]));
+        }
+        else timeResultString[0] = String.valueOf(resultTime[0]);
+        
+        if (resultTime[1] < 10) {
+            timeResultString[1] = ("0" + String.valueOf(resultTime[1]));
+        }
+        else timeResultString[1] = String.valueOf(resultTime[1]);
 
-        scanner.close();
+        
+        
+        
+        //string formatting for user inputted times
+        if (userInputTime[0] < 10) { // adds 0 in front of single digit hours
+            timeResultString[2] = ("0" + String.valueOf(userInputTime[0]));
+        }
+        else timeResultString[2] = String.valueOf(userInputTime[0]); //store user inputted hours in result string array
+
+        if (userInputTime[1] < 10) {
+            timeResultString[3] = ("0" + String.valueOf(userInputTime[1]));
+        }
+        else timeResultString[3] = String.valueOf(userInputTime[1]); //store user inputted minutes in result string array
+        
+
+        switch(userInputTime[2]){
+            case 1:
+                System.out.println("The time converted from " + timeResultString[2] + ":" + timeResultString[3] + " EST is " + timeResultString[0] + ":" + timeResultString[1] + " IST"); break;
+            case 2:
+                System.out.println("The time converted from " + timeResultString[2] + ":" + timeResultString[3] + " IST is " + timeResultString[0] + ":" + timeResultString[1] + " EST"); break;
+            }
+        
+        System.exit(0);
     }
 }
-
-//can even input clock and control execution
-//Thread.sleep(1000);
-// can even try to build clock
-// stretch - clock show in am/pm
-// just need a while loop
